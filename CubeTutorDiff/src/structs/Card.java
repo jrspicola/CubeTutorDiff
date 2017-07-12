@@ -8,7 +8,7 @@ import enums.ColorCode;
  *
  * An individual MTG card. It has a name, a color, a type, and a cmc.
  */
-public class Card {
+public class Card implements Comparable<Card> {
     private String name;
     private ColorCode color;
     private CardType type;
@@ -21,11 +21,11 @@ public class Card {
         this.cmc = cmc;
     }
     
-    public Card(String name, String color, String type, String cmc){
+    public Card(String name, String color, String type, String cmc) {
         this.name = name;
-        this.color = ColorCode.valueOf(color);
-        this.type = CardType.valueOf(type);
-        this.cmc = Integer.parseInt(cmc);
+        this.color = ColorCode.valueOf(stripQuotes(color));
+        this.type = CardType.valueOf(stripQuotes(type));
+        this.cmc = Integer.parseInt(stripQuotes(cmc));
     }
 
     public String getName() {
@@ -44,6 +44,25 @@ public class Card {
         return cmc;
     }
     
+    public String toString() {
+        String del = ", ";
+        return this.getName() + del + this.getColor().print() + del + this.getType().print() + del + this.getCmc();                
+    }
+
+    @Override
+    public int compareTo(Card c) {
+        String n = c.getName();
+        return this.getName().compareToIgnoreCase(n);
+    }
     
+
+    //helper function to remove extra quotation marks
+    private String stripQuotes(String s) {
+        char q = '\"';
+        if (s.charAt(0) == q && s.charAt(s.length()-1) == q)
+            return s.substring(1, s.length()-1);
+        else
+            return s;
+    }
     
 }

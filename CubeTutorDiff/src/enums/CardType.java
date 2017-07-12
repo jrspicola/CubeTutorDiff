@@ -1,5 +1,10 @@
 package enums;
 
+/**
+ * @author Joe Spicola
+ *
+ */
+
 public enum CardType {
         CREATURE("Creature"),
         PLANESWALKER("Planeswalker"),

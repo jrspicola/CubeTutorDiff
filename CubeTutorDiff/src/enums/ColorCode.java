@@ -1,5 +1,9 @@
 package enums;
-
+/**
+ * @author Joe Spicola
+ *
+ * Color codes, as defined by the www.cubetutor.com's exports
+ */
 public enum ColorCode {
     MONO_WHITE("White"),
     MONO_BLUE("Blue"),
