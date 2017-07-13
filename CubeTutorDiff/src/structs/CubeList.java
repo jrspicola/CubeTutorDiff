@@ -1,10 +1,16 @@
 package structs;
 
 import java.util.Scanner;
+import java.util.Set;
+
+import enums.CardType;
+import enums.ColorCode;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class CubeList {
     
@@ -42,7 +48,10 @@ public class CubeList {
         return ID;
     }
 
-
+    public Set<Card> getSetOfUniqueCards() {
+        return this.cubeContents.keySet();
+    }
+    
     public HashMap<Card, Integer> getCubeContents() {
         return cubeContents;
     }
@@ -74,7 +83,7 @@ public class CubeList {
         
     }
 
-    private void addCardToContents(Card c) {
+    public void addCardToContents(Card c) {
         if (this.cubeContents.containsKey(c)) {
             this.cubeContents.put(c,this.cubeContents.get(c)+1);
         }
@@ -84,4 +93,53 @@ public class CubeList {
         
     }
     
+    public int getNumOfTotalCards() {
+        int sum = 0;
+        for (int i : this.cubeContents.values()){
+            sum += i;
+        }
+        
+        return sum;
+    }
+
+    public int getNumOfUniqueCards() {
+        return this.getSetOfUniqueCards().size();
+    }
+
+    
+    //returns boolean if the card was removed
+    public boolean removeCardFromContents(Card c) {
+        if (this.cubeContents.containsKey(c)) {
+            if (this.cubeContents.get(c) >= 2) {
+                this.cubeContents.put(c, this.cubeContents.get(c) - 1);
+            }
+            else {
+                this.cubeContents.remove(c);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean doesCardExist(Card c) {
+        return this.cubeContents.containsKey(c);
+    }
+
+    public Set<Card> findSameCardsBetweenLists(CubeList cl) {
+        Set<Card> s1 = this.getSetOfUniqueCards();
+        Set<Card> s2 = cl.getSetOfUniqueCards();
+        if (s1.equals(s2)) {
+            return s1; //lists are the same, so return one of the sets
+        }
+        s1.retainAll(s2);
+        return s1;
+        
+    }
+    
+    /*
+     * s1.removeAll(cl.getSetOfUniqueCards());
+        s2.removeAll(this.getSetOfUniqueCards());
+        s1.addAll(s2);
+        return s1;
+     */
 }
