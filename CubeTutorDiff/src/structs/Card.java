@@ -55,6 +55,21 @@ public class Card implements Comparable<Card> {
         return this.getName().compareToIgnoreCase(n);
     }
     
+    @Override
+    public boolean equals(Object o){
+        if (o == null) return false;
+        if (!Card.class.isAssignableFrom(o.getClass())) return false;
+        final Card c = (Card) o;
+        return this.name.equals(c.getName());
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
+    
 
     //helper function to remove extra quotation marks
     private String stripQuotes(String s) {

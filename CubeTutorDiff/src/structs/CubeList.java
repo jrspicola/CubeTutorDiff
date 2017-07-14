@@ -3,9 +3,6 @@ package structs;
 import java.util.Scanner;
 import java.util.Set;
 
-import enums.CardType;
-import enums.ColorCode;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -126,20 +123,32 @@ public class CubeList {
     }
 
     public Set<Card> findSameCardsBetweenLists(CubeList cl) {
-        Set<Card> s1 = this.getSetOfUniqueCards();
-        Set<Card> s2 = cl.getSetOfUniqueCards();
+        Set<Card> s1 = new HashSet<>();
+        Set<Card> s2 = new HashSet<>();
+        
+        s1.addAll(this.getSetOfUniqueCards());
+        s2.addAll(cl.getSetOfUniqueCards());
         if (s1.equals(s2)) {
             return s1; //lists are the same, so return one of the sets
         }
         s1.retainAll(s2);
         return s1;
-        
     }
-    
-    /*
-     * s1.removeAll(cl.getSetOfUniqueCards());
+
+    public Set<Card> findDifferentCardsBetweenLists(CubeList cl) {
+        Set<Card> s1 = new HashSet<>();
+        Set<Card> s2 = new HashSet<>();
+        
+        s1.addAll(this.getSetOfUniqueCards());
+        s2.addAll(cl.getSetOfUniqueCards());
+        
+        if (s1.equals(s2)) {
+            return null; //lists are the same, so return one of the sets
+        }
+        
+        s1.removeAll(cl.getSetOfUniqueCards());
         s2.removeAll(this.getSetOfUniqueCards());
         s1.addAll(s2);
         return s1;
-     */
+    }
 }

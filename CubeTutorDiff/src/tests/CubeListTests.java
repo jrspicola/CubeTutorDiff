@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,6 +71,11 @@ public class CubeListTests {
         
         assertFalse(cl.removeCardFromContents(c));
         assertEquals(0,cl.getNumOfUniqueCards());
+        
+        cl.addCardToContents(c);
+        cl.addCardToContents(c);
+        assertTrue(cl.removeCardFromContents(c));
+        assertEquals(1,cl.getNumOfTotalCards());
     }
     
     @Test
@@ -106,8 +110,31 @@ public class CubeListTests {
         Set<Card> diff = cl1.findSameCardsBetweenLists(cl2);
         assertEquals(similar,diff);
         
+        diff = cl1.findSameCardsBetweenLists(cl1);
+        assertEquals(similar,diff);
+    }
+    
+    @Test
+    public void testCubeListFindDifferentCards() throws IOException {
+        CubeList cl1 = new CubeList("TestCube", "Joe Schmoe");
+        CubeList cl2 = new CubeList("TestCube2", "Chuck Duck");
+        Card c = new Card("Black Lotus",ColorCode.COLOURLESS,CardType.ARTIFACT,0);
+        Set<Card> similar = new HashSet<>();
+        similar.add(c);
         
-
+        String fileName = "testData/CubeListTest.csv";
+        File file = new File(fileName);
+        cl1.importCubeContents(file);
         
+        fileName = "testData/CubeListTest2.csv";
+        file = new File(fileName);
+        cl2.importCubeContents(file);
+        
+        
+        Set<Card> diff = cl1.findDifferentCardsBetweenLists(cl2);
+        assertEquals(similar,diff);
+        
+        diff = cl1.findDifferentCardsBetweenLists(cl1);
+        assertEquals(null,diff);
     }
 }
