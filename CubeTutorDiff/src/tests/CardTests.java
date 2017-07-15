@@ -9,6 +9,7 @@ import enums.ColorCode;
 import structs.Card;
 
 public class CardTests {
+    
     @Test
     public void testCardWithEnums() {
         Card c = new Card("Black Lotus", ColorCode.COLOURLESS, CardType.ARTIFACT, 0);
@@ -62,6 +63,14 @@ public class CardTests {
         assertTrue(c1.compareTo(c1) == 0);
         assertTrue(c1.compareTo(c2) < 0);
         assertTrue(c2.compareTo(c1) > 0);
+    }
+    
+    @Test
+    public void testCardOutputs() {
+        Card c = new Card("Black Lotus", ColorCode.COLOURLESS, CardType.ARTIFACT, 0);
+
+        assertEquals("Black Lotus, Colorless, Artifact, 0", c.toString());
+        assertEquals("Black Lotus,Colorless,Artifact,0", c.toCSV());
     }
     
 }

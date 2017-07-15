@@ -4,7 +4,9 @@ import java.util.Scanner;
 import java.util.Set;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,7 +68,7 @@ public class CubeList {
             
             while(inputStream.hasNext()){
                 String line = inputStream.nextLine();
-                String[] values = line.split(",");
+                String[] values = splitCsvHelper(line);
                 Card c = new Card(values[0],values[1],values[2],values[3]);
                 addCardToContents(c);
             }
@@ -76,8 +78,18 @@ public class CubeList {
             e.printStackTrace();
         }
         
+    }
+    private String[] splitCsvHelper(String line){
+        String temp = line;
         
+        int index = temp.indexOf("\"");
+        String first = temp.substring(0, index-1);
         
+        temp = temp.substring(index);
+        String[] rest = temp.split(",");
+        
+        String[] result = {first,rest[0],rest[1],rest[2]};
+        return result;
     }
 
     public void addCardToContents(Card c) {
@@ -150,5 +162,21 @@ public class CubeList {
         s2.removeAll(this.getSetOfUniqueCards());
         s1.addAll(s2);
         return s1;
+    }
+    
+    public static boolean writeCardSetToNewFile(String filePath, Set<Card> s) throws IOException {
+        try {
+            FileWriter write = new FileWriter(filePath);
+            PrintWriter printLine = new PrintWriter(write);
+            for (Card c : s) {
+                printLine.printf("%s" + "%n",  c.toCSV());
+            }
+
+            printLine.close();
+            return true;
+        }  catch (IOException e) {
+            System.out.println( e.getMessage() );
+            return false;
+        }
     }
 }

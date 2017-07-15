@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import enums.CardType;
 import enums.ColorCode;
@@ -15,6 +17,8 @@ import structs.Card;
 import structs.CubeList;
 
 public class CubeListTests {
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Test
     public void testCubeListSimple() {
@@ -136,5 +140,19 @@ public class CubeListTests {
         
         diff = cl1.findDifferentCardsBetweenLists(cl1);
         assertEquals(null,diff);
+    }
+    
+    @Test
+    public void testCubeListWriteNewFileFromSet() throws IOException {
+        
+        CubeList cl = new CubeList("TestCube", "Joe Schmoe");
+        Card c = new Card("Black Lotus",ColorCode.COLOURLESS,CardType.ARTIFACT,0);
+        cl.addCardToContents(c);
+        
+        File tempFile = tempFolder.newFile("file.txt");
+        assertTrue(CubeList.writeCardSetToNewFile(tempFile.getAbsolutePath(), cl.getSetOfUniqueCards()));
+        assertFalse(CubeList.writeCardSetToNewFile("", cl.getSetOfUniqueCards()));
+        
+        
     }
 }

@@ -48,6 +48,11 @@ public class Card implements Comparable<Card> {
         String del = ", ";
         return this.getName() + del + this.getColor().print() + del + this.getType().print() + del + this.getCmc();                
     }
+    
+    public String toCSV() {
+        String del = ",";
+        return this.getName() + del + this.getColor().print() + del + this.getType().print() + del + this.getCmc();  
+    }
 
     @Override
     public int compareTo(Card c) {
