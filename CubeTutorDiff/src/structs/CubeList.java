@@ -2,12 +2,12 @@ package structs;
 
 import java.util.Scanner;
 import java.util.Set;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -18,6 +18,9 @@ public class CubeList {
     private URL url;
     private int ID;
     private HashMap<Card, Integer> cubeContents;
+    
+    private static final char DEFAULT_QUOTE = '"';
+    private static final char DEFAULT_SEPARATOR = ',';
     
     
     public CubeList(String name, String owner){
@@ -68,8 +71,8 @@ public class CubeList {
             
             while(inputStream.hasNext()){
                 String line = inputStream.nextLine();
-                String[] values = splitCsvHelper(line);
-                Card c = new Card(values[0],values[1],values[2],values[3]);
+                ArrayList<String> values = splitCsvHelper(line);
+                Card c = new Card(values.get(0),values.get(1),values.get(2),values.get(3));
                 addCardToContents(c);
             }
             
@@ -79,16 +82,55 @@ public class CubeList {
         }
         
     }
-    private String[] splitCsvHelper(String line){
-        String temp = line;
+    @SuppressWarnings("null")
+    private ArrayList<String> splitCsvHelper(String line){
+        ArrayList<String> result = new ArrayList<>();
+        if (line == null && line.isEmpty()) return result;
         
-        int index = temp.indexOf("\"");
-        String first = temp.substring(0, index-1);
+        StringBuffer curVal = new StringBuffer();
+        boolean inQuotes = false;
+        boolean isCollecting = false;
+        boolean doubleQuoteEscape = false;
         
-        temp = temp.substring(index);
-        String[] rest = temp.split(",");
+        char[] chars = line.toCharArray();
         
-        String[] result = {first,rest[0],rest[1],rest[2]};
+        for (char c : chars) {
+            if (inQuotes) {
+                isCollecting = true;
+                if (c == DEFAULT_QUOTE) {
+                    inQuotes = false;
+                    doubleQuoteEscape = false;
+                } else {
+                    if (c == '\"') {
+                        if (!doubleQuoteEscape) {
+                            curVal.append(c);
+                            doubleQuoteEscape = true;
+                        }
+                    } else {
+                        curVal.append(c);
+                    }
+                }
+            } else {
+                if (c == DEFAULT_QUOTE) {
+                    inQuotes = true;
+                    
+                    if (chars[0] != '"') curVal.append(c);
+                    if (isCollecting) curVal.append(c);
+                } else if (c == DEFAULT_SEPARATOR) {
+                    result.add(curVal.toString());
+                    curVal = new StringBuffer();
+                    isCollecting = false;
+                } else if (c == '\r') {
+                    continue;
+                } else if (c == '\n') {
+                    break;
+                } else {
+                    curVal.append(c);
+                }
+            }
+        }
+        
+        result.add(curVal.toString());
         return result;
     }
 
