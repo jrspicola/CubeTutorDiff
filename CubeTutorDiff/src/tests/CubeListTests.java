@@ -1,10 +1,14 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Rule;
@@ -116,6 +120,30 @@ public class CubeListTests {
         
         diff = cl1.findSameCardsBetweenLists(cl1);
         assertEquals(similar,diff);
+    }
+    
+    @Test
+    public void testCubeListFindDifferentCardCounts() throws IOException {
+        CubeList cl1 = new CubeList("TestCube", "Joe Schmoe");
+        CubeList cl2 = new CubeList("TestCube2", "Chuck Duck");
+        Card c1 = new Card("Black Lotus",ColorCode.COLOURLESS,CardType.ARTIFACT,0);
+        Card c2 = new Card("Boros Elite",ColorCode.MONO_WHITE,CardType.CREATURE,1);
+        Map<Card, Integer> missing = new HashMap<>();
+        missing.put(c1, 2);
+
+        cl1.addCardToContents(c1);
+        cl1.addCardToContents(c1);
+        cl1.addCardToContents(c1);
+        cl1.addCardToContents(c2);
+        
+        cl2.addCardToContents(c1);
+        cl2.addCardToContents(c2);
+        
+        Map<Card, Integer> diff = cl1.findMissingCardsBetweenLists(cl2);
+        assertEquals(missing,diff);
+        
+        diff = cl1.findMissingCardsBetweenLists(cl1);
+        assertEquals(null,diff);
     }
     
     @Test

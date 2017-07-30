@@ -1,7 +1,5 @@
 package structs;
 
-import java.util.Scanner;
-import java.util.Set;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,6 +8,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.Set;
 
 public class CubeList {
     
@@ -220,5 +222,24 @@ public class CubeList {
             System.out.println( e.getMessage() );
             return false;
         }
+    }
+
+    public Map<Card, Integer> findMissingCardsBetweenLists(CubeList cl2) {
+        Map<Card, Integer> result = new HashMap<>();
+        
+        for (Entry<Card, Integer> e : this.cubeContents.entrySet()) {
+            if (cl2.cubeContents.get(e.getKey()) == null)
+                result.put(e.getKey(),e.getValue());
+            else {
+                //get the difference between the two lists
+                int comp = Math.abs(e.getValue() - cl2.cubeContents.get(e.getKey()));
+                if (comp == 0)
+                    continue;
+                else
+                    result.put(e.getKey(), comp);
+            }
+        }
+        if (result.size() == 0) return null;
+        return result;
     }
 }

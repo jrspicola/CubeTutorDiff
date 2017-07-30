@@ -2,7 +2,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-import structs.*;
+import structs.Card;
+import structs.CubeList;
 
 public class MainClass {
 
