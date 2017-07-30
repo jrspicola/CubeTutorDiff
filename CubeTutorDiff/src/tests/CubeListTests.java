@@ -128,8 +128,10 @@ public class CubeListTests {
         CubeList cl2 = new CubeList("TestCube2", "Chuck Duck");
         Card c1 = new Card("Black Lotus",ColorCode.COLOURLESS,CardType.ARTIFACT,0);
         Card c2 = new Card("Boros Elite",ColorCode.MONO_WHITE,CardType.CREATURE,1);
+        Card c3 = new Card("Ancestral Recall",ColorCode.MONO_BLUE,CardType.INSTANT,1);
         Map<Card, Integer> missing = new HashMap<>();
         missing.put(c1, 2);
+        missing.put(c3, 1);
 
         cl1.addCardToContents(c1);
         cl1.addCardToContents(c1);
@@ -138,6 +140,7 @@ public class CubeListTests {
         
         cl2.addCardToContents(c1);
         cl2.addCardToContents(c2);
+        cl2.addCardToContents(c3);
         
         Map<Card, Integer> diff = cl1.findMissingCardsBetweenLists(cl2);
         assertEquals(missing,diff);
@@ -169,7 +172,7 @@ public class CubeListTests {
         diff = cl1.findDifferentCardsBetweenLists(cl1);
         assertEquals(null,diff);
     }
-    
+
     @Test
     public void testCubeListWriteNewFileFromSet() throws IOException {
         
@@ -180,7 +183,17 @@ public class CubeListTests {
         File tempFile = tempFolder.newFile("file.txt");
         assertTrue(CubeList.writeCardSetToNewFile(tempFile.getAbsolutePath(), cl.getSetOfUniqueCards()));
         assertFalse(CubeList.writeCardSetToNewFile("", cl.getSetOfUniqueCards()));
+    }
+    
+    @Test
+    public void testCubeListWriteNewFileFromHashMap() throws IOException {
         
+        CubeList cl = new CubeList("TestCube", "Joe Schmoe");
+        Card c = new Card("Black Lotus",ColorCode.COLOURLESS,CardType.ARTIFACT,0);
+        cl.addCardToContents(c);
         
+        File tempFile = tempFolder.newFile("file.txt");
+        assertTrue(CubeList.writeCardSetToNewFile(tempFile.getAbsolutePath(), cl.getCubeContents()));
+        assertFalse(CubeList.writeCardSetToNewFile("", cl.getCubeContents()));
     }
 }

@@ -219,26 +219,46 @@ public class CubeList {
             printLine.close();
             return true;
         }  catch (IOException e) {
-            System.out.println( e.getMessage() );
+            return false;
+        }
+    } 
+    
+    //use for the count - will iterate over list and add the card multiple times if necessary
+    public static boolean writeCardSetToNewFile(String filePath, Map<Card, Integer> map) throws IOException {
+        try {
+            FileWriter write = new FileWriter(filePath);
+            PrintWriter printLine = new PrintWriter(write);
+            
+            for (Entry<Card,Integer> e : map.entrySet()) {
+                for (int i=0;i<e.getValue();i++) {
+                    printLine.printf("%s" + "%n", e.getKey().toCSV());
+                }
+            }
+
+            printLine.close();
+            return true;
+        }  catch (IOException e) {
             return false;
         }
     }
 
     public Map<Card, Integer> findMissingCardsBetweenLists(CubeList cl2) {
         Map<Card, Integer> result = new HashMap<>();
-        
-        for (Entry<Card, Integer> e : this.cubeContents.entrySet()) {
-            if (cl2.cubeContents.get(e.getKey()) == null)
-                result.put(e.getKey(),e.getValue());
-            else {
-                //get the difference between the two lists
-                int comp = Math.abs(e.getValue() - cl2.cubeContents.get(e.getKey()));
-                if (comp == 0)
-                    continue;
-                else
-                    result.put(e.getKey(), comp);
-            }
+        Set<Card> cards = new HashSet<>();
+        cards.addAll(this.getSetOfUniqueCards());
+        cards.addAll(cl2.getSetOfUniqueCards());
+        for (Card c : cards) {
+            int left = 0;
+            int right = 0;
+            if (this.getCubeContents().get(c) != null) 
+                left = this.getCubeContents().get(c);
+            if (cl2.getCubeContents().get(c) != null)
+                right = cl2.getCubeContents().get(c);
+            
+            int comp = Math.abs(left - right);
+            if (comp != 0) result.put(c,comp);
         }
+        
         if (result.size() == 0) return null;
         return result;
     }

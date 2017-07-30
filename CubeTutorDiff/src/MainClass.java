@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
-
+import java.util.Map;
 import structs.Card;
 import structs.CubeList;
 
@@ -19,11 +18,11 @@ public class MainClass {
         file = new File(fileName);
         cl2.importCubeContents(file);
         
-        Set<Card> set = cl1.findDifferentCardsBetweenLists(cl2);
+        Map<Card, Integer> map = cl1.findMissingCardsBetweenLists(cl2);
         
-        String destFilePath = "C:/Users/Joe Spicola/Documents/MTG/Cube Tutor Lists/missing_ravnica.csv";
+        String destFilePath = "C:/Users/Joe Spicola/Documents/MTG/Cube Tutor Lists/missing_ravnica_full.csv";
         
-        CubeList.writeCardSetToNewFile(destFilePath, set);
+        CubeList.writeCardSetToNewFile(destFilePath, map);
     }
 
 }
