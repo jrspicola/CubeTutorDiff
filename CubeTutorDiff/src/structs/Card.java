@@ -44,14 +44,16 @@ public class Card implements Comparable<Card> {
         return cmc;
     }
     
+    @Override
     public String toString() {
         String del = ", ";
         return this.getName() + del + this.getColor().print() + del + this.getType().print() + del + this.getCmc();                
     }
     
     public String toCSV() {
+        String qu = "\"";
         String del = ",";
-        return this.getName() + del + this.getColor().print() + del + this.getType().print() + del + this.getCmc();  
+        return qu + this.getName() + qu + del + qu + this.getColor().print() + qu + del + qu + this.getType().print() + qu + del + qu + this.getCmc() + qu;  
     }
 
     @Override

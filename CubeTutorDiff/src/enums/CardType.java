@@ -7,6 +7,7 @@ package enums;
 
 public enum CardType {
         CREATURE("Creature"),
+        ARTIFACT_CREATURE("Artifact Creature"),
         PLANESWALKER("Planeswalker"),
         INSTANT("Instant"),
         SORCERY("Sorcery"),

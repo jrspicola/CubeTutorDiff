@@ -1,6 +1,8 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -70,7 +72,7 @@ public class CardTests {
         Card c = new Card("Black Lotus", ColorCode.COLOURLESS, CardType.ARTIFACT, 0);
 
         assertEquals("Black Lotus, Colorless, Artifact, 0", c.toString());
-        assertEquals("Black Lotus,Colorless,Artifact,0", c.toCSV());
+        assertEquals("\"Black Lotus\",\"Colorless\",\"Artifact\",\"0\"", c.toCSV());
     }
     
 }
